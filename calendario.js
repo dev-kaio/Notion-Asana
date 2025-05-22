@@ -1,3 +1,5 @@
+import { renderTasks } from "./sidebar.js";
+
 const calendarGrid = document.getElementById("calendar-grid");
 const currentMonth = document.getElementById("current-month");
 
@@ -31,6 +33,7 @@ function renderCalendar() {
 
     calendarGrid.appendChild(cell);
   }
+  renderTasks(date);
 }
 
 document.getElementById("prev-month").onclick = () => {

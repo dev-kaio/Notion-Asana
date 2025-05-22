@@ -4,19 +4,19 @@
 }
 
 main {
-  background: rgba(0, 0, 0s) no-repeat center center;
+  background: #f8f9fa no-repeat center center;
   background-size: cover;
-  height: 94.5vh;
+  height: 95vh;
 }
 
 nav {
-  height: 5.5vh;
+  height: 5vh;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* Sidebar inicial oculta à esquerda */
+/* Sidebar esquerda */
 #mySidebar {
   position: fixed;
   top: 0;
@@ -28,6 +28,7 @@ nav {
   transition: transform 0.3s ease;
   z-index: 1000;
   overflow-y: auto;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
 }
 
 /* Sidebar visível */
@@ -41,6 +42,7 @@ body {
   background: #f8f9fa;
 }
 
+/* Calendário */
 .calendar-toolbar {
   display: flex;
   justify-content: space-between;
@@ -100,4 +102,65 @@ body {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+/* Sidebar Direita - Nova Tarefa */
+.task-sidebar {
+  position: fixed;
+  top: 0;
+  right: -30vw;
+  width: 30vw;
+  height: 100vh;
+  background-color: #fff;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
+  padding: 20px;
+  box-sizing: border-box;
+  transition: right 0.3s ease;
+  z-index: 2000;
+  overflow-y: auto;
+}
+
+.task-sidebar.active {
+  right: 0;
+}
+
+.close-sidebar {
+  background: none;
+  border: none;
+  font-size: 30px;
+  cursor: pointer;
+  float: right;
+  margin-top: -10px;
+  margin-right: -10px;
+}
+
+/* Status das tarefas */
+.task-status-em-desenvolvimento {
+  background-color: #facc15;
+  color: #000;
+}
+
+.task-status-revisao {
+  background-color: #7c4a00;
+  color: #fff;
+}
+
+.task-status-atrasada {
+  background-color: #dc2626;
+  color: #fff;
+}
+
+.task-status-finalizada {
+  background-color: #16a34a;
+  color: #fff;
+}
+
+form {
+  font-size: larger;
+  display: flex;
+  align-items: left;
+  padding: 50px;
+  justify-content: center;
+  margin: 25px;
+  flex-direction: column;
 }

@@ -10,13 +10,18 @@
   <body>
     <header>
       <nav>
-        <div class="w3-sidebar w3-bar-block w3-border-right" id="mySidebar">
+        <div class="w3-sidebar w3-bar-block" id="mySidebar">
           <button
             onclick="w3_close()"
-            class="w3-bar-item w3-xlarge"
-            style="cursor: pointer; height: 5.5vh"
+            class="close-sidebar"
+            style="
+              cursor: pointer;
+              height: 5vh;
+              margin-right: 0.5vw;
+              margin-top: 0.1vw;
+            "
           >
-            Fechar
+            ×
           </button>
           <a href="#" class="w3-bar-item w3-button w3-large w3-margin-top"
             >Insights</a
@@ -32,15 +37,23 @@
       </nav>
     </header>
 
-    <main style="margin-left: 200px; padding: 20px">
+    <main style="padding: 20px">
       <div class="calendar-toolbar">
         <button id="add-task" class="w3-button w3-border w3-round-xlarge">
           Adicionar Tarefa
         </button>
         <div class="calendar-nav">
-          <span id="current-month" style="padding: 10px"></span>
-          <button id="prev-month" class="w3-round-xlarge w3-button w3-border">❰</button>
-          <button id="next-month" class="w3-round-xlarge w3-button w3-border">❱</button>
+          <span
+            id="current-month"
+            style="padding: 10px"
+            class="w3-xlarge"
+          ></span>
+          <button id="prev-month" class="w3-round-xlarge w3-button w3-border">
+            ❰
+          </button>
+          <button id="next-month" class="w3-round-xlarge w3-button w3-border">
+            ❱
+          </button>
         </div>
       </div>
 
@@ -58,7 +71,40 @@
       </div>
     </main>
 
-    <script src="calendario.js"></script>
-    <script src="sidebar.js"></script>
+    <div id="taskSidebar" class="task-sidebar">
+      <button id="closeTaskSidebar" class="close-sidebar">×</button>
+      <h2>Adicionar Tarefa</h2>
+      <form id="taskForm">
+        <label for="taskName">Nome da Tarefa:</label>
+        <input type="text" id="taskName" name="taskName" required />
+
+        <label for="taskDate">Data Limite:</label>
+        <input type="date" id="taskDate" name="taskDate" required />
+
+        <label for="taskType">Tipo:</label>
+        <select id="taskType" name="taskType" required>
+          <option value="">Selecione</option>
+          <option value="tipo1">Tipo 1</option>
+          <option value="tipo2">Tipo 2</option>
+          <option value="tipo3">Tipo 3</option>
+          <option value="tipo4">Tipo 4</option>
+        </select>
+
+        <label for="taskDescription">Descrição da Tarefa:</label>
+        <textarea
+          name="taskDescription"
+          id="taskDescription"
+          cols="25"
+          rows="8"
+        ></textarea>
+
+        <button type="submit" class="w3-button w3-green w3-margin-top">
+          Salvar
+        </button>
+      </form>
+    </div>
+
+    <script type="module" src="calendario.js"></script>
+    <script type="module" src="sidebar.js"></script>
   </body>
 </html>
