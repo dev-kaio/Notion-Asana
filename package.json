@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "firebase-admin": "^13.4.0",
+    "gitignore": "^0.7.0"
+  }
+}

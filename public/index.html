@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login / Cadastro - Task Calendar</title>
+    <link rel="stylesheet" href="./styles/login.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <div id="login-area" class="card">
+        <h2>Login</h2>
+        <input type="email" id="login-email" placeholder="Email" />
+        <input type="password" id="login-password" placeholder="Senha" />
+        <button id="login-btn">Entrar</button>
+        <div id="login-error" class="error"></div>
+      </div>
+
+      <div class="divider">OU</div>
+
+      <div id="signup-area" class="card">
+        <h2>Cadastrar Novo Usuário</h2>
+        <input type="email" id="signup-email" placeholder="Novo Email" />
+        <input type="password" id="signup-password" placeholder="Nova Senha" />
+        <button id="signup-btn">Cadastrar Usuário</button>
+        <div id="signup-error" class="error"></div>
+      </div>
+    </div>
+
+    <script type="module" src="./src/components/login.js"></script>
+  </body>
+</html>
