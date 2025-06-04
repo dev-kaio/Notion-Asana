@@ -1,22 +1,19 @@
-//Não está sendo usado no momento, talvez não seja necessário
-
-import { getAuth } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-auth.js";
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
-import { getDatabase, update, ref, set, get } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, update, ref, set, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDHgBd3FSy4jk6jxQ9TeaKPOlG04exj5Jc",
-    authDomain: "notion-asana.firebaseapp.com",
-    databaseURL: "https://notion-asana-default-rtdb.firebaseio.com",
-    projectId: "notion-asana",
-    storageBucket: "notion-asana.firebasestorage.app",
-    messagingSenderId: "677053179287",
-    appId: "1:677053179287:web:92de0fe05856a74a4f50d2",
-    measurementId: "G-WFWKEDQ64K"
+    apiKey: "AIzaSyDDKxLRCY4QO_s1S5HzrkIa84pRh02MOPE",
+    authDomain: "projeto-gerenciador-equipes.firebaseapp.com",
+    projectId: "projeto-gerenciador-equipes",
+    storageBucket: "projeto-gerenciador-equipes.firebasestorage.app",
+    messagingSenderId: "1062419358608",
+    appId: "1:1062419358608:web:f8fdbe73fae6307e4e4915",
+    measurementId: "G-JG807DK0HJ"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const auth = getAuth(app);
 
-export { auth, db, update, ref, set, get };
+export { db, auth };
