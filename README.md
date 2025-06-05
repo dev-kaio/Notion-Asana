@@ -1,3 +1,1 @@
-git add .
-git commit -m "Descrição da alteração"
-git push
+Login está funcionando no firebase

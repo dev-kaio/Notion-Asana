@@ -1,4 +1,4 @@
-import { login, cadastrarUsuario, logout } from "../../../auth/permissions.js";
+import { login, cadastrarUsuario } from "./permissions.js";
 
 const loginBtn = document.getElementById("login-btn");
 const signupBtn = document.getElementById("signup-btn");
@@ -12,7 +12,7 @@ loginBtn.addEventListener("click", async () => {
   const result = await login(email, password);
 
   if (result.success) {
-    window.location.href = window.location.origin + "/index.html";
+    window.location.href = "./pages/home.html";
   } else {
     loginError.textContent = "Erro: " + result.message;
   }

@@ -2,7 +2,7 @@ const express = require("express");
 const path = require("path");
 const app = express();
 const PORT = process.env.PORT || 3000;
-const admin = require('firebase-admin');
+const admin = require("firebase-admin");
 require("dotenv").config();
 
 const serviceAccount = {
@@ -18,35 +18,63 @@ admin.initializeApp({
   databaseURL: databaseURL,
 });
 
-const db = admin.database(); //Inicializando o Realtime DB
+const db = admin.database();
+const authAdmin = admin.auth();
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "public"))); // Serve arquivos da pasta atual
+app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-app.post('/api/GuardarTarefa', async (req, res) => {
-    try {
-      const novaTarefa = req.body;
-  
-      if (!novaTarefa.name || !novaTarefa.date || !novaTarefa.type || !novaTarefa.description) {
-        return res.status(400).json({ message: "Todos os campos da tarefa são obrigatórios." });
-      }
-  
-      //ORGANIZAR CAMINHO NO DB
-      const newRef = db.ref('tasks').push();
-      await newRef.set(novaTarefa);
-  
-      res.status(201).json({ message: "Tarefa salva com sucesso!" });
-  
-    } catch (error) {
-      console.error("Erro ao salvar tarefa no Realtime Database:", error);
-      res.status(500).json({ message: "Erro interno do servidor ao salvar tarefa.", error: error.message });
-    }
-  });
-
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
+
+//Cadastrando usuário
+app.post("/api/registrar", async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json({ message: "Email e senha obrigatórios." });
+  }
+
+  try {
+    const userAuth = await authAdmin.createUser({
+      email: email,
+      senha: password,
+    });
+    console.log("Usuário criado com UID: ", userAuth.uid);
+
+    const customToken = await authAdmin.createCustomToken(userAuth.uid);
+    res.status(201).json({
+      customToken: customToken,
+      message: "Usuário cadastrado e token gerado.",
+    });
+  } catch (error) {
+    console.error("Erro ao cadastrar usuário: ", error.message);
+    let errorMessage = "Erro ao cadastrar usuário.";
+    if (error.code === "auth/email-already-exists") {
+      errorMessage = "Email já está em uso.";
+    } else if (error.code === "auth/weak-password") {
+      errorMessage = "A senha é muito fraca (mínimo de 6 caracteres).";
+    }
+    res.status(400).json({ message: errorMessage, error: error.message });
+  }
+});
+
+//Logando usuário (Não terminei)
+app.post('/api/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password){
+    return res.status(400).json({ message: "Email e senha obrigatórios. "});
+  }
+
+  try{
+
+  }
+})
+
+//Salvar tarefas no Realtime DB
