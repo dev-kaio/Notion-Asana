@@ -1,1 +1,1 @@
-Login está funcionando no firebase
+Adicionar tarefa está dando erro após ter feito editar tarefa no backend
