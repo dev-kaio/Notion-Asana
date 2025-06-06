@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("path");
+const axios = require("axios");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const admin = require("firebase-admin");
@@ -43,7 +44,7 @@ app.post("/api/registrar", async (req, res) => {
   try {
     const userAuth = await authAdmin.createUser({
       email: email,
-      senha: password,
+      password: password,
     });
     console.log("Usuário criado com UID: ", userAuth.uid);
 
@@ -64,17 +65,40 @@ app.post("/api/registrar", async (req, res) => {
   }
 });
 
-//Logando usuário (Não terminei)
-app.post('/api/login', async (req, res) => {
+app.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
 
-  if (!email || !password){
-    return res.status(400).json({ message: "Email e senha obrigatórios. "});
+  if (!email || !password) {
+    return res.status(400).json({ message: "Email e senha obrigatórios." });
   }
 
-  try{
+  try {
+    const apiKey = process.env.FIREBASE_API_KEY;
+    const response = await axios.post(
+      `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`,
+      {
+        email,
+        password,
+        returnSecureToken: true,
+      }
+    );
 
+    const uid = response.data.localId;
+
+    const customToken = await authAdmin.createCustomToken(uid);
+
+    res.status(200).json({ customToken });
+  } catch (error) {
+    console.error("Erro no login:", error.response?.data || error.message);
+    let message = "Falha ao logar.";
+    if (error.response?.data?.error?.message === "EMAIL_NOT_FOUND") {
+      message = "Email não encontrado.";
+    } else if (error.response?.data?.error?.message === "INVALID_PASSWORD") {
+      message = "Senha incorreta.";
+    }
+    res.status(401).json({ message });
   }
-})
+});
+
 
 //Salvar tarefas no Realtime DB

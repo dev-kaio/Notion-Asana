@@ -1,104 +1,89 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Task Calendar - Home</title>
-    <link rel="stylesheet" href="/public/styles/style.css" />
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-  </head>
 
-  <body>
-    <header>
-      <nav>
-        <div class="w3-sidebar w3-bar-block" id="mySidebar">
-          <button onclick="w3_close()" class="close-sidebar">×</button>
-          <a href="#" class="w3-bar-item w3-button w3-large w3-margin-top"
-            >Insights</a
-          >
-          <a href="#" class="w3-bar-item w3-button w3-large w3-margin-top"
-            >Projetos</a
-          >
-          <a href="#" class="w3-bar-item w3-button w3-large w3-margin-top"
-            >Equipes</a
-          >
-        </div>
-        <button class="w3-button w3-xlarge" onclick="w3_open()">☰</button>
-        <button id="toggle-theme-btn"><i class="fa fa-moon-o"></i></button>
-      </nav>
-    </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Task Calendar - Home</title>
+  <link rel="stylesheet" href="/styles/style.css" />
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+</head>
 
-    <main style="padding: 20px">
-      <div class="calendar-toolbar">
-        <button id="add-task" class="w3-button w3-border w3-round-xlarge">
-          Adicionar Tarefa
-        </button>
-        <div class="calendar-nav">
-          <span
-            id="current-month"
-            class="w3-xlarge"
-            style="padding: 10px"
-          ></span>
-          <button id="prev-month" class="w3-round-xlarge w3-button w3-border">
-            ❰
-          </button>
-          <button id="next-month" class="w3-round-xlarge w3-button w3-border">
-            ❱
-          </button>
-        </div>
+<body>
+  <header>
+    <nav>
+      <div class="w3-sidebar w3-bar-block" id="mySidebar">
+        <button onclick="w3_close()" class="close-sidebar">×</button>
+        <a href="#" class="w3-bar-item w3-button w3-large w3-margin-top">Insights</a>
+        <a href="#" class="w3-bar-item w3-button w3-large w3-margin-top">Projetos</a>
+        <a href="#" class="w3-bar-item w3-button w3-large w3-margin-top">Equipes</a>
       </div>
+      <button class="w3-button w3-xlarge" onclick="w3_open()">☰</button>
+      <button id="toggle-theme-btn"><i class="fa fa-moon-o"></i></button>
+    </nav>
+  </header>
 
-      <div class="calendar">
-        <div class="calendar-weekdays">
-          <div>SEG</div>
-          <div>TER</div>
-          <div>QUA</div>
-          <div>QUI</div>
-          <div>SEX</div>
-          <div>SÁB</div>
-          <div>DOM</div>
-        </div>
-        <div class="calendar-grid" id="calendar-grid"></div>
-      </div>
-    </main>
-
-    <div id="taskSidebar" class="task-sidebar">
-      <button id="closeTaskSidebar" class="close-sidebar">×</button>
-      <h2>Adicionar Tarefa</h2>
-      <form id="taskForm">
-        <label for="taskName">Nome da Tarefa:</label>
-        <input type="text" id="taskName" name="taskName" required />
-
-        <label for="taskDate">Data Limite:</label>
-        <input type="date" id="taskDate" name="taskDate" required />
-
-        <label for="taskType">Tipo:</label>
-        <select id="taskType" name="taskType" required>
-          <option value="">Selecione</option>
-          <option value="tipo1">Tipo 1</option>
-          <option value="tipo2">Tipo 2</option>
-          <option value="tipo3">Tipo 3</option>
-          <option value="tipo4">Tipo 4</option>
-        </select>
-
-        <label for="taskDescription">Descrição da Tarefa:</label>
-        <textarea
-          id="taskDescription"
-          name="taskDescription"
-          cols="25"
-          rows="8"
-        ></textarea>
-
-        <button type="submit" class="w3-button w3-green w3-margin-top">
-          Salvar
+  <main style="padding: 20px">
+    <div class="calendar-toolbar">
+      <button id="add-task" class="w3-button w3-border w3-round-xlarge">
+        Adicionar Tarefa
+      </button>
+      <div class="calendar-nav">
+        <span id="current-month" class="w3-xlarge" style="padding: 10px"></span>
+        <button id="prev-month" class="w3-round-xlarge w3-button w3-border">
+          ❰
         </button>
-      </form>
+        <button id="next-month" class="w3-round-xlarge w3-button w3-border">
+          ❱
+        </button>
+      </div>
     </div>
 
-    <script type="module" src="/public/src/main.js"></script>
-  </body>
+    <div class="calendar">
+      <div class="calendar-weekdays">
+        <div>SEG</div>
+        <div>TER</div>
+        <div>QUA</div>
+        <div>QUI</div>
+        <div>SEX</div>
+        <div>SÁB</div>
+        <div>DOM</div>
+      </div>
+      <div class="calendar-grid" id="calendar-grid"></div>
+    </div>
+  </main>
+
+  <div id="taskSidebar" class="task-sidebar">
+    <button id="closeTaskSidebar" class="close-sidebar">×</button>
+    <h2>Adicionar Tarefa</h2>
+    <form id="taskForm">
+      <label for="taskName">Nome da Tarefa:</label>
+      <input type="text" id="taskName" name="taskName" required />
+
+      <label for="taskDate">Data Limite:</label>
+      <input type="date" id="taskDate" name="taskDate" required />
+
+      <label for="taskType">Tipo:</label>
+      <select id="taskType" name="taskType" required>
+        <option value="">Selecione</option>
+        <option value="tipo1">Tipo 1</option>
+        <option value="tipo2">Tipo 2</option>
+        <option value="tipo3">Tipo 3</option>
+        <option value="tipo4">Tipo 4</option>
+      </select>
+
+      <label for="taskDescription">Descrição da Tarefa:</label>
+      <textarea id="taskDescription" name="taskDescription" cols="25" rows="8"></textarea>
+
+      <button type="submit" class="w3-button w3-green w3-margin-top">
+        Salvar
+      </button>
+    </form>
+  </div>
+
+  <script type="module" src="/src/main.js"></script>
+
+</body>
+
 </html>

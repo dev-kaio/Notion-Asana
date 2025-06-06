@@ -14,13 +14,13 @@ async function login(email, password) {
       },
       body: JSON.stringify({ email, password }),
     });
+    const responseData = await response.json();
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Falha no login.");
+      throw new Error(responseData.message || "Falha no login.");
     }
 
-    const { customToken } = await response.json();
+    const { customToken } = responseData;
 
     if (!customToken) {
       throw new Error("Token de login não recebido.");
@@ -28,6 +28,7 @@ async function login(email, password) {
 
     await signInWithCustomToken(auth, customToken);
     console.log("Login bem-sucedido!");
+    window.location.href = "./pages/home.html"
     return { success: true };
   } catch (error) {
     console.error("Erro no processo de login:", error);
@@ -36,7 +37,7 @@ async function login(email, password) {
 }
 
 async function cadastrarUsuario(email, password) {
-  try{
+  try {
     const response = await fetch('api/registrar', {
       method: 'POST',
       headers: {
@@ -45,12 +46,20 @@ async function cadastrarUsuario(email, password) {
       body: JSON.stringify({ email, password }),
     });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || "Falha no cadastro.");
+    const text = await response.text();
+    let data = {};
+
+    try {
+      data = text ? JSON.parse(text) : {};
+    } catch (e) {
+      console.warn("Resposta não era JSON:", text);
     }
 
-    const { customToken } = await response.json();
+    if (!response.ok) {
+      throw new Error(data.message || "Falha no cadastro.");
+    }
+
+    const { customToken } = data;
 
     if (!customToken) {
       throw new Error("Token de cadastro não recebido.");
@@ -59,11 +68,13 @@ async function cadastrarUsuario(email, password) {
     await signInWithCustomToken(auth, customToken);
     console.log("Cadastro bem-sucedido! Logando...");
     return { success: true };
+
   } catch (error) {
     console.error("Erro no processo de cadastro:", error);
     return { success: false, message: error.message };
   }
 }
+
 
 async function logout() {
   try {
