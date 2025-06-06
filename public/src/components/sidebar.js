@@ -102,12 +102,12 @@ taskForm.addEventListener("submit", async (e) => {
 
     const result = await response.json();
     console.log("Tarefa adicionada com sucesso:", result);
-  
-    taskSidebar.classList.remove("active"); 
+
+    taskSidebar.classList.remove("active");
     taskForm.reset();
-  }catch (error) {
+  } catch (error) {
     console.error("Erro ao enviar tarefa para o backend:", error);
   }
 
-  
+
 });

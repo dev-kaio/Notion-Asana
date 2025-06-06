@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerenciamento de Equipes</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../styles/equipes.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="w3-sidebar w3-bar-block" id="mySidebar">
+                <button onclick="w3_close()" class="close-sidebar">×</button>
+                <a href="#" class="w3-bar-item w3-button w3-large w3-margin-top">Insights</a>
+                <a href="#" class="w3-bar-item w3-button w3-large w3-margin-top">Projetos</a>
+                <a href="#" class="w3-bar-item w3-button w3-large w3-margin-top">Equipes</a>
+            </div>
+            <button class="w3-button w3-xlarge" onclick="w3_open()">☰</button>
+            <button id="toggle-theme-btn"><i class="fa fa-moon-o"></i></button>
+        </nav>
+        <div class="team-header">
+            <h1>Equipes</h1>
+            <button class="add-team-btn" id="openModalBtn"><i class="fa fa-plus"></i> Nova Equipe</button>
+        </div>
+    </header>
+
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Buscar equipe..." />
+    </div>
+
+    <section class="teams-list" id="teamsList">
+        <div class="team-card">
+            <h3>Marketing</h3>
+            <div class="team-members">
+                <img src="https://i.pravatar.cc/100?img=1" />
+                <img src="https://i.pravatar.cc/100?img=2" />
+                <img src="https://i.pravatar.cc/100?img=3" />
+            </div>
+            <p class="team-description">Responsável pela comunicação, campanhas e branding.</p>
+            <button class="delete-btn">🗑️ Excluir</button>
+        </div>
+    </section>
+
+    <div class="modal" id="teamModal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModalBtn">&times;</span>
+            <h2>Criar Nova Equipe</h2>
+            <form id="teamForm">
+                <label for="teamName">Nome da Equipe:</label>
+                <input type="text" id="teamName" required />
+
+                <label for="teamDescription">Descrição:</label>
+                <textarea id="teamDescription" rows="4" required></textarea>
+
+                <label for="avatarCount">Quantidade de membros (avatares aleatórios):</label>
+                <input type="number" id="avatarCount" min="1" max="10" value="3" />
+
+                <button type="submit">Adicionar</button>
+            </form>
+        </div>
+    </div>
+<script type="module" src="../src/main.js"></script>
+    <script>
+        function w3_open() {
+            document.getElementById("mySidebar").style.display = "block";
+        }
+
+        function w3_close() {
+            document.getElementById("mySidebar").style.display = "none";
+        }
+
+        const openModalBtn = document.getElementById('openModalBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const teamModal = document.getElementById('teamModal');
+        const teamForm = document.getElementById('teamForm');
+        const teamsList = document.getElementById('teamsList');
+
+        openModalBtn.onclick = () => {
+            teamModal.style.display = 'block';
+        };
+
+        closeModalBtn.onclick = () => {
+            teamModal.style.display = 'none';
+        };
+
+        window.onclick = (event) => {
+            if (event.target == teamModal) {
+                teamModal.style.display = 'none';
+            }
+        };
+
+        teamForm.onsubmit = (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('teamName').value.trim();
+            const description = document.getElementById('teamDescription').value.trim();
+            const avatarCount = parseInt(document.getElementById('avatarCount').value) || 3;
+
+            if (!name || !description) return;
+
+            const card = document.createElement('div');
+            card.className = 'team-card';
+
+            const avatars = Array.from({ length: avatarCount }, () => {
+                const avatarIndex = Math.floor(Math.random() * 70) + 1;
+                return `<img src="https://i.pravatar.cc/100?img=${avatarIndex}" />`;
+            }).join('');
+
+            card.innerHTML = `
+        <h3>${name}</h3>
+        <div class="team-members">${avatars}</div>
+        <p class="team-description">${description}</p>
+        <button class="delete-btn">🗑️ Excluir</button>
+    `;
+
+            // Adiciona evento de excluir
+            card.querySelector('.delete-btn').addEventListener('click', () => {
+                teamsList.removeChild(card);
+            });
+
+            teamsList.appendChild(card);
+            teamForm.reset();
+            teamModal.style.display = 'none';
+        };
+
+        const searchInput = document.getElementById('searchInput');
+
+        searchInput.addEventListener('input', () => {
+            const searchTerm = searchInput.value.toLowerCase();
+            const cards = document.querySelectorAll('.team-card');
+
+            cards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                card.style.display = title.includes(searchTerm) ? 'block' : 'none';
+            });
+        });
+
+        // Eventos excluir para as equipes fixas
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const card = e.target.closest('.team-card');
+                card.remove();
+            });
+        });
+
+    </script>
+</body>

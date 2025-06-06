@@ -1,5 +1,5 @@
 import './components/sidebar.js';
-import './components/calendario.js'; 
+import './components/calendario.js';
 
 function updateThemeIcon(isDarkTheme) {
     const themeToggleButton = document.getElementById('toggle-theme-btn');
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (savedTheme === 'dark') {
         body.classList.add('dark-theme');
-        isDarkThemeOnLoad = true; 
+        isDarkThemeOnLoad = true;
     }
 
     updateThemeIcon(isDarkThemeOnLoad);
