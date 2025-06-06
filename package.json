@@ -5,5 +5,16 @@
     "express": "^5.1.0",
     "firebase-admin": "^13.4.0",
     "gitignore": "^0.7.0"
-  }
+  },
+  "name": "notion-asana",
+  "version": "1.0.0",
+  "description": "Login está funcionando no firebase",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

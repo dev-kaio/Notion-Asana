@@ -4,6 +4,7 @@ const axios = require("axios");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const admin = require("firebase-admin");
+// const { verify } = require("crypto"); USAR FUTURAMENTE PARA VERIFICAR SE O USUÁRIO ESTÁ LOGADO
 require("dotenv").config();
 
 const serviceAccount = {
@@ -65,6 +66,7 @@ app.post("/api/registrar", async (req, res) => {
   }
 });
 
+//Logando
 app.post("/api/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -100,5 +102,101 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
-
 //Salvar tarefas no Realtime DB
+app.post("/api/salvarTarefa", async (req, res) => {
+  try {
+    const newTask = req.body;
+
+    if (
+      !newTask.responsavel ||
+      !newTask.name ||
+      !newTask.date ||
+      !newTask.type ||
+      !newTask.description
+    ) {
+      return res
+        .status(400)
+        .json({ message: "Todos os campos devem ser preenchidos." });
+    }
+
+    const tempRef = db.ref("Tarefas").push();
+    const keyBD = tempRef.key;
+
+    const caminhoFormatado = newTask.name
+      .replace(/[^a-zA-Z0-9\s-]/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+    const dataLimite = newTask.date;
+    const caminhoFinal = `${caminhoFormatado} (${dataLimite}) - ${keyBD}`;
+
+    await db.ref(`Tarefas/${caminhoFinal}`).set(newTask);
+
+    res
+      .status(201)
+      .json({ id: caminhoFinal, message: "Tarefa salva com sucesso." });
+  } catch (error) {
+    console.error("Erro ao salvar tarefa no Banco de Dados: ", error);
+    res.status(500).json({
+      message: "Erro interno do servidor ao salvar tarefa.",
+      error: error.message,
+    });
+  }
+});
+
+//Puxar tarefas do BD
+app.get("/api/puxarTarefas", async (req, res) => {
+  try {
+    const tarefasRef = db.ref("Tarefas");
+    const snapshot = await tarefasRef.once("value");
+    const tarefas = snapshot.val();
+    const tarefasArray = [];
+    if (tarefas) {
+      for (const tarefaId in tarefas) {
+        tarefasArray.push({ id: tarefaId, ...tarefas[tarefaId] });
+      }
+    }
+    res.status(200).json(tarefasArray);
+  } catch (error) {
+    console.error("Erro ao buscar tarefa: ", error);
+    res
+      .status(500)
+      .json({ message: "Erro ao buscar tarefas", error: error.message });
+  }
+});
+
+//Deletar tarefa
+app.delete("/api/deletarTarefa/:id", async (req, res) => {
+  try {
+    const tarefaID = req.params.id;
+
+    await db.ref(`Tarefas/${tarefaID}`).remove();
+
+    res.status(200).json({ message: "Tarefa deletada com sucesso." });
+  } catch (error) {
+    console.error("Erro ao deletar tarefa: ", error);
+    res
+      .status(500)
+      .json({ message: "Erro ao deletar tarefa", error: error.message });
+  }
+});
+
+//Atualizar tarefa
+app.put("/api/editarTarefa/:id", async (req, res) => {
+  try {
+    const tarefaID = req.params.id;
+    const updatedTaskData = req.body;
+
+    //VERIFYIDTOKEN FUTURAMENTE
+    // Opcional: Verifique se o usuário autenticado tem permissão para atualizar esta tarefa.
+    // Para isso, você precisaria buscar a tarefa do banco de dados primeiro
+    // e comparar o 'creatorUid' (se você o salvou) com 'req.user.uid'.
+
+    await db.ref(`Tarefas/${tarefaID}`).update(updatedTaskData);
+    res.status(200).json({ message: "Tarefa atualizada com sucesso." });
+  } catch (error) {
+    console.error("Erro ao atualizar tarefa: ", error);
+    res
+      .status(500)
+      .json({ message: "Erro ao atualizar tarefa", error: error.message });
+  }
+});

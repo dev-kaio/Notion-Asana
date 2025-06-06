@@ -1,6 +1,18 @@
 import './components/sidebar.js';
-import './components/calendario.js'; 
+import { initializeCalendar, fetchAndRenderTasks } from './components/calendario.js';
+//Criar uma verificação de Id Token futuramente
+//import { auth } from "../../auth/permissions.js";
 
+//Lógica da inicialização da página
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log("DOM totalmente carregado. Iniciando calendário e carregando tarefas...");
+
+    initializeCalendar();
+
+    await fetchAndRenderTasks();
+});
+
+//ALTERAÇÃO DE TEMA
 function updateThemeIcon(isDarkTheme) {
     const themeToggleButton = document.getElementById('toggle-theme-btn');
     if (themeToggleButton) {
