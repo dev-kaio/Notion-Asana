@@ -114,7 +114,7 @@ if (taskForm) {
         successMessage = "Tarefa atualizada com sucesso!";
       } else {
         method = "POST";
-        url = "/api/tarefas"; // URL para criação de nova tarefa
+        url = "/api/salvarTarefa"; // URL para criação de nova tarefa
         successMessage = "Tarefa adicionada com sucesso!";
         if (taskTitle) taskTitle.textContent = "Adicionar Tarefa";
       }
