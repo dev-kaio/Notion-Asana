@@ -14,7 +14,9 @@
   <header>
     <nav>
       <div class="w3-sidebar w3-bar-block" id="mySidebar">
-        <button onclick="w3_close()" class="close-sidebar">×</button>
+        <button onclick="w3_close()" class="close-sidebar" style="margin: 20px; margin-top: 0px; margin-bottom: 10px">
+          ×
+        </button>
         <a href="#" class="w3-bar-item w3-button w3-large w3-margin-top">Insights</a>
         <a href="#" class="w3-bar-item w3-button w3-large w3-margin-top">Projetos</a>
         <a href="#" class="w3-bar-item w3-button w3-large w3-margin-top">Equipes</a>
@@ -56,8 +58,11 @@
 
   <div id="taskSidebar" class="task-sidebar">
     <button id="closeTaskSidebar" class="close-sidebar">×</button>
-    <h2>Adicionar Tarefa</h2>
+    <h2 id="taskTitle">Adicionar Tarefa</h2>
     <form id="taskForm">
+      <label for="responsavel">Responsável pela Tarefa:</label>
+      <input type="text" id="responsavel" name="responsavel" required />
+
       <label for="taskName">Nome da Tarefa:</label>
       <input type="text" id="taskName" name="taskName" required />
 
@@ -82,6 +87,8 @@
     </form>
   </div>
 
+  <script type="module" src="../src/config/firebaseConfig.js"></script>
+  <script type="module" src="../auth/permissions.js"></script>
   <script type="module" src="../src/main.js"></script>
 
 </body>

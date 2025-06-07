@@ -1,113 +1,166 @@
-// Sidebar da esquerda
+// Criar uma verificação de Id Token futuramente
+// import { auth } from '../../auth/permissions.js';
+
+import { fetchAndRenderTasks } from "./calendario.js";
+
 window.w3_open = function () {
-  document.getElementById("mySidebar").classList.add("active");
+  const mySidebar = document.getElementById("mySidebar");
+  if (mySidebar) {
+    mySidebar.classList.add("active");
+  }
 };
 
 window.w3_close = function () {
-  document.getElementById("mySidebar").classList.remove("active");
+  const mySidebar = document.getElementById("mySidebar");
+  if (mySidebar) {
+    mySidebar.classList.remove("active");
+  }
 };
 
-// Sidebar da direita
 const addTaskBtn = document.getElementById("add-task");
 const taskSidebar = document.getElementById("taskSidebar");
 const closeTaskSidebarBtn = document.getElementById("closeTaskSidebar");
 const taskForm = document.getElementById("taskForm");
-const calendarGrid = document.getElementById("calendar-grid");
+const saveTaskButton = taskForm
+  ? taskForm.querySelector('button[type="submit"]')
+  : null;
+const taskTitle = document.getElementById("taskTitle");
+let editingTaskId = null;
 
-addTaskBtn.addEventListener("click", () => {
-  taskSidebar.classList.add("active");
-});
-
-closeTaskSidebarBtn.addEventListener("click", () => {
-  taskSidebar.classList.remove("active");
-});
-
-let tasks = [];
-
-export function renderTasks(currentDate) {
-  document.querySelectorAll(".task").forEach((t) => t.remove());
-
-  tasks.forEach((task) => {
-    const taskDate = new Date(task.date);
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
-
-    if (taskDate.getFullYear() === year && taskDate.getMonth() === month) {
-      const day = taskDate.getDate();
-      const firstDay = new Date(year, month, 1).getDay();
-      const startPadding = (firstDay + 6) % 7;
-      const cellIndex = startPadding + day - 1;
-
-      const cell = calendarGrid.children[cellIndex];
-      if (cell) {
-        const taskDiv = document.createElement("div");
-        taskDiv.classList.add("task");
-
-        switch (task.status) {
-          case "em desenvolvimento":
-            taskDiv.classList.add("task-status-em-desenvolvimento");
-            break;
-          case "revisao":
-            taskDiv.classList.add("task-status-revisao");
-            break;
-          case "atrasada":
-            taskDiv.classList.add("task-status-atrasada");
-            break;
-          case "finalizada":
-            taskDiv.classList.add("task-status-finalizada");
-            break;
-        }
-
-        taskDiv.textContent = task.name;
-        cell.appendChild(taskDiv);
-      }
-    }
+if (addTaskBtn && taskSidebar) {
+  addTaskBtn.addEventListener("click", () => {
+    editingTaskId = null;
+    if (taskForm) taskForm.reset();
+    if (saveTaskButton) saveTaskButton.textContent = "Salvar";
+    taskSidebar.classList.add("active");
+    taskTitle.textContent = "Adicionar Tarefa";
   });
 }
 
-taskForm.addEventListener("submit", async (e) => {
-  e.preventDefault();
+if (closeTaskSidebarBtn && taskSidebar) {
+  closeTaskSidebarBtn.addEventListener("click", () => {
+    taskSidebar.classList.remove("active");
+    editingTaskId = null;
+    if (taskForm) taskForm.reset();
+    if (saveTaskButton) saveTaskButton.textContent = "Salvar";
+  });
+}
 
-  const name = taskForm.taskName.value.trim();
-  const dateInput = taskForm.taskDate.value;
-  const type = taskForm.taskType.value;
-  const description = taskForm.taskDescription.value.trim();
-
-  if (!name || !dateInput || !type || !description) {
-    alert("Preencha todos os campos");
+/**
+ * @function openTaskFormForEdit
+ * @description Abre a sidebar do formulário de tarefas e preenche seus campos
+ * com os dados de uma tarefa existente para edição.
+ * Esta função é exportada e chamada pelo `calendario.js` quando uma tarefa é clicada.
+ * @param {object} taskData - O objeto da tarefa a ser editada (com todos os seus campos, incluindo 'id').
+ */
+export function openTaskFormForEdit(taskData) {
+  if (!taskForm || !taskSidebar || !saveTaskButton) {
+    console.error(
+      "Elementos do formulário ou sidebar de tarefas não encontrados."
+    );
     return;
   }
 
-  const newTask = {
-    name,
-    date: dateInput,
-    type,
-    description,
-    status: "em desenvolvimento",
-  };
+  editingTaskId = taskData.id; // Define o ID da tarefa que será editada.
 
-  try {
-    const response = await fetch('/api/GuardarTarefa', { // Envia a tarefa para o backend via POST
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newTask), // Converte o objeto JavaScript para JSON
-    });
+  taskForm.responsavel.value = taskData.responsavel || "";
+  taskForm.taskName.value = taskData.name || "";
+  taskForm.taskDate.value = taskData.date || "";
+  taskForm.taskType.value = taskData.type || "";
+  taskForm.taskDescription.value = taskData.description || "";
+  taskTitle.textContent = "Editar Tarefa";
+  saveTaskButton.textContent = "Atualizar Tarefa";
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(`Falha ao adicionar tarefa: ${errorData.message || response.statusText}`);
+  taskSidebar.classList.add("active");
+}
+
+if (taskForm) {
+  taskForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const responsavel = taskForm.responsavel.value.trim();
+    const name = taskForm.taskName.value.trim();
+    const dateInput = taskForm.taskDate.value;
+    const type = taskForm.taskType.value;
+    const description = taskForm.taskDescription.value.trim();
+
+    if (!responsavel || !name || !dateInput || !type || !description) {
+      alert("Preencha todos os campos");
+      return;
     }
+    const taskBE = {
+      responsavel,
+      name,
+      date: dateInput,
+      type,
+      description,
+      status: "em desenvolvimento",
+    };
 
-    const result = await response.json();
-    console.log("Tarefa adicionada com sucesso:", result);
+    try {
+      let method;
+      let url;
+      let successMessage;
 
-    taskSidebar.classList.remove("active");
-    taskForm.reset();
-  } catch (error) {
-    console.error("Erro ao enviar tarefa para o backend:", error);
-  }
+      //Arrumar após criar "editar tarefa" no backend
+      if (editingTaskId) {
+        method = "PUT";
+        url = `/api/editarTarefa/${editingTaskId}`; // URL com o ID da tarefa para atualização
+        successMessage = "Tarefa atualizada com sucesso!";
+      } else {
+        method = "POST";
+        url = "/api/tarefas"; // URL para criação de nova tarefa
+        successMessage = "Tarefa adicionada com sucesso!";
+        if (taskTitle) taskTitle.textContent = "Adicionar Tarefa";
+      }
 
+      let headers = {
+        "Content-Type": "application/json",
+      };
 
-});
+      //ANALISAR FUTURAMENTE QUANDO TIVER O VERIFYIDTOKEN
+      // **CRÍTICO PARA SEGURANÇA:** Anexa o ID Token do usuário logado ao cabeçalho Authorization.
+      // Isso é essencial se suas rotas POST e PUT no backend estiverem protegidas pelo `verifyIdToken`.
+      // (Você deve descomentar o 'import { auth } from '../../auth/permissions.js';' no início deste arquivo
+      // e no `calendario.js`, e também ativar o `verifyIdToken` no seu `server.js`).
+      // if (auth.currentUser) {
+      //   const idToken = await auth.currentUser.getIdToken();
+      //   headers["Authorization"] = `Bearer ${idToken}`;
+      // } else {
+      //   // Se o usuário não estiver logado, e a rota for protegida, impede a requisição.
+      //   alert("Você precisa estar logado para salvar/atualizar tarefas.");
+      //   console.error("Usuário não autenticado para salvar/atualizar tarefa.");
+      //   return;
+      // }
+
+      console.log("Enviando para o backend:", method, url, taskBE);
+
+      const response = await fetch(url, {
+        method: method,
+        headers: headers,
+        body: JSON.stringify(taskBE),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(
+          `Falha na operação: ${errorData.message || response.statusText}`
+        );
+      }
+
+      const result = await response.json();
+      console.log(successMessage, result);
+      alert(successMessage);
+
+      await fetchAndRenderTasks();
+
+      if (taskSidebar) taskSidebar.classList.remove("active");
+      if (taskForm) taskForm.reset();
+      editingTaskId = null;
+      if (saveTaskButton) saveTaskButton.textContent = "Salvar";
+    } catch (error) {
+      console.error("Erro ao enviar tarefa para o backend:", error);
+      alert("Ocorreu um erro ao salvar/atualizar a tarefa.");
+    }
+  });
+}
