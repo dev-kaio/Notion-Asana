@@ -1,20 +1,36 @@
-body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #f4f6f8;
+* {
     margin: 0;
-    padding: 20px;
+    padding: 0;
 }
 
-header {
-    padding: 10px 0;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #ddd;
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f0f0f0;
+    color: #333;
+    margin: 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+nav {
+    height: 5vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 5px;
+}
+
+section {
+    padding: 20px;
+    padding-top: 0;
+    margin: 0;
 }
 
 .team-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 20px;
+    padding-bottom: 0;
 }
 
 .w3-bar-item {
@@ -23,7 +39,7 @@ header {
 
 .team-header h1 {
     font-size: 28px;
-    color: #333;
+    color: inherit;
 }
 
 .add-team-btn {
@@ -38,6 +54,8 @@ header {
 
 .search-bar {
     margin: 20px 0;
+    padding: 20px;
+    padding-top: 0;
 }
 
 .search-bar input {
@@ -45,6 +63,8 @@ header {
     padding: 10px;
     border-radius: 6px;
     border: 1px solid #ccc;
+    background-color: white;
+    color: inherit;
 }
 
 .teams-list {
@@ -55,6 +75,7 @@ header {
 
 .team-card {
     background-color: white;
+    color: inherit;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -63,7 +84,7 @@ header {
 
 .team-card h3 {
     margin-top: 0;
-    color: #333;
+    color: inherit;
 }
 
 .team-members {
@@ -105,6 +126,7 @@ header {
     border-radius: 8px;
     width: 400px;
     position: relative;
+    color: inherit;
 }
 
 .close-modal {
@@ -122,6 +144,8 @@ header {
     margin: 10px 0;
     border-radius: 5px;
     border: 1px solid #ccc;
+    background-color: white;
+    color: inherit;
 }
 
 .modal button {
@@ -131,6 +155,13 @@ header {
     border: none;
     border-radius: 6px;
     cursor: pointer;
+}
+
+.card-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 10px;
+    gap: 10px;
 }
 
 .delete-btn {
@@ -144,24 +175,38 @@ header {
     font-size: 14px;
 }
 
+.action-btn {
+    margin-top: 10px;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.edit-btn {
+    background-color: #2196F3;
+    color: white;
+}
+
 .w3-sidebar {
     z-index: 1001;
 }
 
-.w3-button.w3-xlarge {
-    font-size: 24px;
+#toggle-theme-btn {
     background: none;
     border: none;
+    color: inherit;
     cursor: pointer;
-    margin-bottom: 10px;
+    transition: color 0.3s ease;
 }
 
-nav {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
+#toggle-theme-btn:hover {
+    opacity: 0.7;
 }
+
 
 .close-sidebar {
     font-size: 24px;
@@ -181,9 +226,64 @@ nav {
     top: 0;
     left: 0;
     height: 100vh;
-    width: 250px;
+    width: 15vw;
     display: none;
     z-index: 1001;
     overflow-y: auto;
-    background-color: #f1f1f1;
+    background-color: #fff;
+}
+
+.dark-theme {
+    background-color: #1e1e1e;
+    color: #f0f0f0;
+}
+
+.dark-theme .team-header h1,
+.dark-theme .team-card h3,
+.dark-theme .team-description {
+    color: #f0f0f0;
+}
+
+.dark-theme .team-card {
+    background-color: #2a2a2a;
+}
+
+.dark-theme .search-bar input {
+    background-color: #333;
+    border: 1px solid #555;
+    color: #f0f0f0;
+}
+
+.dark-theme .modal-content {
+    background-color: #2a2a2a;
+    color: #f0f0f0;
+}
+
+.dark-theme .modal input,
+.dark-theme .modal textarea {
+    background-color: #3a3a3a;
+    color: #f0f0f0;
+    border: 1px solid #555;
+}
+
+.dark-theme .modal input::placeholder,
+.dark-theme .modal textarea::placeholder {
+    color: #bbb;
+}
+
+.dark-theme .w3-sidebar {
+    background-color: #333 !important;
+    color: #eee;
+}
+
+.dark-theme .w3-bar-block .w3-button {
+    color: #eee !important;
+}
+
+.dark-theme .delete-btn {
+    background-color: #b34030;
+}
+
+.dark-theme #toggle-theme-btn {
+    color: #f0f0f0;
 }

@@ -131,8 +131,7 @@ export async function fetchAndRenderTasks() {
       }
       const errorData = await response.json();
       throw new Error(
-        `Erro HTTP! Status: ${response.status} - ${
-          errorData.message || response.statusText
+        `Erro HTTP! Status: ${response.status} - ${errorData.message || response.statusText
         }`
       );
     }

@@ -1,21 +1,26 @@
 // Criar uma verificação de Id Token futuramente
 // import { auth } from '../../auth/permissions.js';
-
 import { fetchAndRenderTasks } from "./calendario.js";
 
-window.w3_open = function () {
-  const mySidebar = document.getElementById("mySidebar");
-  if (mySidebar) {
-    mySidebar.classList.add("active");
+export function w3_open() {
+  const sidebar = document.getElementById("mySidebar");
+  if (sidebar) {
+    sidebar.style.display = "block";
+    sidebar.classList.add("active");
   }
-};
+}
 
-window.w3_close = function () {
-  const mySidebar = document.getElementById("mySidebar");
-  if (mySidebar) {
-    mySidebar.classList.remove("active");
+export function w3_close() {
+  const sidebar = document.getElementById("mySidebar");
+  if (sidebar) {
+    sidebar.style.display = "none";
+    sidebar.classList.remove("active");
   }
-};
+}
+
+window.w3_open = w3_open;
+window.w3_close = w3_close;
+
 
 const addTaskBtn = document.getElementById("add-task");
 const taskSidebar = document.getElementById("taskSidebar");

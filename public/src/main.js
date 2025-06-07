@@ -1,5 +1,4 @@
 import './components/sidebar.js';
-
 import { initializeCalendar, fetchAndRenderTasks } from './components/calendario.js';
 //Criar uma verificação de Id Token futuramente
 //import { auth } from "../../auth/permissions.js";
