@@ -33,6 +33,22 @@ app.get("/equipes", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "pages/equipes.html"));
 });
 
+app.get("/atendimento", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "pages", "atendimento.html"));
+});
+
+app.get("/artes", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "pages", "artes.html"));
+});
+
+app.get("/multimidia/foto-filmagem", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "pages", "foto-filmagem.html"));
+});
+
+app.get("/multimidia/edicao", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "pages", "edicao.html"));
+});
+
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);

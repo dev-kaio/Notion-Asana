@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gerenciamento de Equipes</title>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../styles/equipes.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="w3-sidebar w3-bar-block" id="mySidebar">
+                <button onclick="w3_close()" class="close-sidebar">×</button>
+                <a href="./home.html" class="w3-bar-item w3-button w3-large w3-margin-top">Home</a>
+                <a href="#" class="w3-bar-item w3-button w3-large w3-margin-top">Insights</a>
+                <a href="#" class="w3-bar-item w3-button w3-large w3-margin-top">Projetos</a>
+                <a href="./equipes.html" class="w3-bar-item w3-button w3-large w3-margin-top">Equipes</a>
+            </div>
+            <button class="w3-button w3-xlarge" onclick="w3_open()">☰</button>
+            <button id="toggle-theme-btn"><i class="fa fa-moon-o"></i></button>
+        </nav>
+    </header>
+    <section>
+        <div class="team-header">
+            <h1>Equipes</h1>
+            <button class="add-team-btn" id="openModalBtn"><i class="fa fa-plus"></i> Nova Equipe</button>
+        </div>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Buscar equipe..." />
+        </div>
+
+        <section class="teams-list" id="teamsList">
+            <!-- serão carregados aqui os cards das equipes conforme salvas no banco de dados -->
+        </section>
+
+        <div class="modal" id="teamModal">
+            <div class="modal-content">
+                <span class="close-modal" id="closeModalBtn">&times;</span>
+                <h2>Criar Nova Equipe</h2>
+                <form id="teamForm">
+                    <label for="teamName">Nome da Equipe:</label>
+                    <input type="text" id="teamName" required />
+
+                    <label for="teamDescription">Descrição:</label>
+                    <textarea id="teamDescription" rows="4" required></textarea>
+
+                    <label for="avatarCount">Quantidade de membros (avatares aleatórios):</label>
+                    <input type="number" id="avatarCount" min="1" max="10" value="3" />
+
+                    <button type="submit">Adicionar</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <script type="module" src="../src/main.js"></script>
+    <script type="module" src="../src/components/artes.js"></script>
+</body>

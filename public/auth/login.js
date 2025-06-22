@@ -12,7 +12,7 @@ loginBtn.addEventListener("click", async () => {
   const result = await login(email, password);
 
   if (result.success) {
-    window.location.href = "./pages/home.html";
+    window.location.href = "./pages/equipes.html";
   } else {
     loginError.textContent = "Erro: " + result.message;
   }
