@@ -143,8 +143,6 @@ if (taskForm) {
       //   return;
       // }
 
-      console.log("Enviando para o backend:", method, url, taskBE);
-
       const response = await fetch(url, {
         method: method,
         headers: headers,
@@ -158,8 +156,7 @@ if (taskForm) {
         );
       }
 
-      const result = await response.json();
-      console.log(successMessage, result);
+      console.log(successMessage);
       alert(successMessage);
 
       await fetchAndRenderTasks();

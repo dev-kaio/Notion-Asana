@@ -186,32 +186,30 @@ function renderTasksOnCalendar() {
         taskDiv.classList.add("task");
 
         //Mudar cor de acordo com a data de entrega
-        const dataDia = new Date();
-        const dia = String(dataDia.getDate()).padStart(2, '0');
-        const mes = String(dataDia.getMonth() + 1).padStart(2, '0');
-        const ano = dataDia.getFullYear();
-        const dataDiaFinal = `${dia}/${mes}/${ano}`
+        const hoje = new Date();
+        hoje.setHours(0, 0, 0, 0);
 
-        const dataLimite = new Date(task.date)
-        const diaf = String(dataLimite.getDate()).padStart(2, '0');
-        const mesf = String(dataLimite.getMonth() + 1).padStart(2, '0');
-        const anof = dataLimite.getFullYear();
-        const dataLimiteFinal = `${diaf}/${mesf}/${anof}`
+        const dataLimite = new Date(task.date);
+        dataLimite.setHours(0, 0, 0, 0);
 
-        if (dataLimiteFinal > dataDiaFinal) {
+        if (dataLimite > hoje) {
           task.status = "dentro do prazo";
           taskDiv.classList.add("task-status-em-desenvolvimento");
-        }
-        else if (dataLimiteFinal == dataDiaFinal) {
+        } else if (dataLimite.getTime() === hoje.getTime()) {
           task.status = "dia limite";
           taskDiv.classList.add("task-status-em-limite");
-        }
-        else if (dataLimiteFinal < dataDiaFinal) {
+        } else {
           task.status = "atrasada";
           taskDiv.classList.add("task-status-atrasada");
         }
 
-        taskDiv.textContent = task.name;
+        const dia = String(dataLimite.getDate()).padStart(2, '0');
+        const mes = String(dataLimite.getMonth() + 1).padStart(2, '0');
+        const ano = dataLimite.getFullYear();
+
+        const dataLimiteFinal = `${dia}/${mes}/${ano}`;
+
+        taskDiv.textContent = `${task.cliente} - ${dataLimiteFinal} - ${task.type} `;
 
         // ==============================================================
         // TORNANDO A TAREFA CLICÁVEL PARA EDIÇÃO
