@@ -211,7 +211,7 @@ body.dark-theme textarea::placeholder {
 }
 
 /* Status das tarefas */
-.task-status-em-desenvolvimento {
+.task-status-em-limite {
   background-color: #facc15;
   color: #000;
 }
@@ -226,7 +226,7 @@ body.dark-theme textarea::placeholder {
   color: #fff;
 }
 
-.task-status-finalizada {
+.task-status-em-desenvolvimento {
   background-color: #16a34a;
   color: #fff;
 }

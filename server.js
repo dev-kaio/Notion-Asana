@@ -114,7 +114,9 @@ app.post("/api/salvarTarefa", async (req, res) => {
     if (
       !newTask.responsavel ||
       !newTask.name ||
+      !newTask.cliente ||
       !newTask.date ||
+      !newTask.dataInsercao ||
       !newTask.type ||
       !newTask.description
     ) {
@@ -131,7 +133,7 @@ app.post("/api/salvarTarefa", async (req, res) => {
       .replace(/\s+/g, " ")
       .trim();
     const dataLimite = newTask.date;
-    const caminhoFinal = `${caminhoFormatado} (${dataLimite}) - ${keyBD}`;
+    const caminhoFinal = `${caminhoFormatado} (${dataLimite}) ${keyBD}`;
 
     await db.ref(`Tarefas/${caminhoFinal}`).set(newTask);
 

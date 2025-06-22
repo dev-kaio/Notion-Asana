@@ -162,11 +162,11 @@ function renderTasksOnCalendar() {
 
   tasks.forEach((task) => {
     // Valida se a tarefa possui uma data válida e tenta convertê-la.
-    if (!task.date || isNaN(new Date(task.date))) {
+    if (!task.dataInsercao || isNaN(new Date(task.dataInsercao))) {
       console.warn("Tarefa com data inválida ou ausente, ignorando:", task);
       return;
     }
-    const taskDate = new Date(task.date);
+    const taskDate = new Date(task.dataInsercao);
 
     // Verifica se a tarefa pertence ao mês e ano atualmente exibidos no calendário.
     if (taskDate.getFullYear() === year && taskDate.getMonth() === month) {
@@ -185,21 +185,30 @@ function renderTasksOnCalendar() {
         const taskDiv = document.createElement("div");
         taskDiv.classList.add("task");
 
-        switch (task.status) {
-          case "em desenvolvimento":
-            taskDiv.classList.add("task-status-em-desenvolvimento");
-            break;
-          case "revisao":
-            taskDiv.classList.add("task-status-revisao");
-            break;
-          case "atrasada":
-            taskDiv.classList.add("task-status-atrasada");
-            break;
-          case "finalizada":
-            taskDiv.classList.add("task-status-finalizada");
-            break;
-          default:
-            taskDiv.classList.add("task-status-default");
+        //Mudar cor de acordo com a data de entrega
+        const dataDia = new Date();
+        const dia = String(dataDia.getDate()).padStart(2, '0');
+        const mes = String(dataDia.getMonth() + 1).padStart(2, '0');
+        const ano = dataDia.getFullYear();
+        const dataDiaFinal = `${dia}/${mes}/${ano}`
+
+        const dataLimite = new Date(task.date)
+        const diaf = String(dataLimite.getDate()).padStart(2, '0');
+        const mesf = String(dataLimite.getMonth() + 1).padStart(2, '0');
+        const anof = dataLimite.getFullYear();
+        const dataLimiteFinal = `${diaf}/${mesf}/${anof}`
+
+        if (dataLimiteFinal > dataDiaFinal) {
+          task.status = "dentro do prazo";
+          taskDiv.classList.add("task-status-em-desenvolvimento");
+        }
+        else if (dataLimiteFinal == dataDiaFinal) {
+          task.status = "dia limite";
+          taskDiv.classList.add("task-status-em-limite");
+        }
+        else if (dataLimiteFinal < dataDiaFinal) {
+          task.status = "atrasada";
+          taskDiv.classList.add("task-status-atrasada");
         }
 
         taskDiv.textContent = task.name;
@@ -210,7 +219,6 @@ function renderTasksOnCalendar() {
         taskDiv.addEventListener("click", () => {
           openTaskFormForEdit(task);
         });
-
         cell.appendChild(taskDiv);
       }
     }

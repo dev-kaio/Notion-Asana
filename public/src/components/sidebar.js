@@ -70,6 +70,7 @@ export function openTaskFormForEdit(taskData) {
 
   taskForm.responsavel.value = taskData.responsavel || "";
   taskForm.taskName.value = taskData.name || "";
+  taskForm.cliente.value = taskData.cliente || "";
   taskForm.taskDate.value = taskData.date || "";
   taskForm.taskType.value = taskData.type || "";
   taskForm.taskDescription.value = taskData.description || "";
@@ -85,18 +86,22 @@ if (taskForm) {
 
     const responsavel = taskForm.responsavel.value.trim();
     const name = taskForm.taskName.value.trim();
+    const cliente = taskForm.cliente.value.trim();
     const dateInput = taskForm.taskDate.value;
     const type = taskForm.taskType.value;
     const description = taskForm.taskDescription.value.trim();
+    const dataInsercao = new Date().toISOString();
 
-    if (!responsavel || !name || !dateInput || !type || !description) {
+    if (!responsavel || !name || !cliente || !dateInput || !type || !description) {
       alert("Preencha todos os campos");
       return;
     }
     const taskBE = {
       responsavel,
       name,
+      cliente,
       date: dateInput,
+      dataInsercao,
       type,
       description,
       status: "em desenvolvimento",

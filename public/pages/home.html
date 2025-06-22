@@ -67,16 +67,19 @@
       <label for="taskName">Nome da Tarefa:</label>
       <input type="text" id="taskName" name="taskName" required />
 
+      <label for="taskName">Cliente:</label>
+      <input type="text" id="cliente" name="cliente" required />
+
       <label for="taskDate">Data Limite:</label>
       <input type="date" id="taskDate" name="taskDate" required />
 
       <label for="taskType">Tipo:</label>
       <select id="taskType" name="taskType" required>
-        <option value="">Selecione</option>
-        <option value="tipo1">Tipo 1</option>
-        <option value="tipo2">Tipo 2</option>
-        <option value="tipo3">Tipo 3</option>
-        <option value="tipo4">Tipo 4</option>
+        <option value="" disabled selected>Selecione</option>
+        <option value="Avulso">Avulso</option>
+        <option value="Combo">Combo</option>
+        <option value="PW">PW</option>
+        <option value="Reunião">Reunião</option>
       </select>
 
       <label for="taskDescription">Descrição da Tarefa:</label>
