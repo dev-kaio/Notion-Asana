@@ -65,6 +65,7 @@ body.dark-theme #toggle-theme-btn {
 body.dark-theme {
   background-color: #1a1a1a;
   color: #f0f0f0;
+  scrollbar-color: white #2a2a2a;
 }
 
 body.dark-theme .w3-sidebar {
@@ -178,6 +179,7 @@ body.dark-theme textarea::placeholder {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  cursor:pointer;
 }
 
 /* Sidebar Direita - Nova Tarefa */
@@ -213,30 +215,60 @@ body.dark-theme textarea::placeholder {
 /* Status das tarefas */
 .task-status-em-limite {
   background-color: #facc15;
-  color: #000;
+  color: #000000;
 }
-
-.task-status-revisao {
-  background-color: #7c4a00;
-  color: #fff;
+    
+.task-status-concluida {
+  background-color: rgba(50, 50, 50, 0.5);
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .task-status-atrasada {
   background-color: #dc2626;
-  color: #fff;
+  color: #000000;
 }
 
 .task-status-em-desenvolvimento {
   background-color: #16a34a;
-  color: #fff;
+  color: #000000;
 }
 
 form {
-  font-size: larger;
+  font-size: large;
+  font-family: 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   display: flex;
   align-items: left;
   padding: 50px;
   justify-content: center;
   margin: 25px;
   flex-direction: column;
+}
+
+form input, select, textarea, #btnSalvar, #btnConcluir{
+  border-radius: 10px;
+  padding: 5px;
+  padding-top: 2.5px;
+  padding-bottom: 2.5px;
+  margin-bottom: 4%;
+  border: 1px solid rgba(0, 0, 0, 0.5 );
+}
+
+#btnSalvar{
+  border: none;
+  padding: 8px;
+}
+
+#btnConcluir{
+  border: none;
+  padding: 8px;
+  font-size: larger;
+}
+
+form select{
+  margin-bottom: 4%;
+}
+
+.form-concluida {
+  opacity: 0.7;
+  background-color: #f2f2f2;
 }

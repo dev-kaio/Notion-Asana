@@ -131,7 +131,8 @@ export async function fetchAndRenderTasks() {
       }
       const errorData = await response.json();
       throw new Error(
-        `Erro HTTP! Status: ${response.status} - ${errorData.message || response.statusText
+        `Erro HTTP! Status: ${response.status} - ${
+          errorData.message || response.statusText
         }`
       );
     }
@@ -185,13 +186,22 @@ function renderTasksOnCalendar() {
         const taskDiv = document.createElement("div");
         taskDiv.classList.add("task");
 
-        //Mudar cor de acordo com a data de entrega
+        // Mudar cor de acordo com a data de entrega
         const hoje = new Date();
         hoje.setHours(0, 0, 0, 0);
 
         const dataLimite = new Date(task.date);
         dataLimite.setHours(0, 0, 0, 0);
 
+        if (task.status == "concluída") {
+
+          //ClassName nao esta alterando, apesar do status de conclusao os antigos classlists (desenvolvimento, atrasado ou dia limite) nao estao sendo removidos
+          taskDiv.className = "task task-status-concluida";
+          console.log(
+            "Classe 'task-status-concluida' aplicada à tarefa:",
+            taskDiv
+          );
+        }
         if (dataLimite > hoje) {
           task.status = "dentro do prazo";
           taskDiv.classList.add("task-status-em-desenvolvimento");
@@ -203,21 +213,31 @@ function renderTasksOnCalendar() {
           taskDiv.classList.add("task-status-atrasada");
         }
 
-        const dia = String(dataLimite.getDate()).padStart(2, '0');
-        const mes = String(dataLimite.getMonth() + 1).padStart(2, '0');
+        const dia = String(dataLimite.getDate()).padStart(2, "0");
+        const mes = String(dataLimite.getMonth() + 1).padStart(2, "0");
         const ano = dataLimite.getFullYear();
 
         const dataLimiteFinal = `${dia}/${mes}/${ano}`;
 
         taskDiv.textContent = `${task.cliente} - ${dataLimiteFinal} - ${task.type} `;
 
-        // ==============================================================
         // TORNANDO A TAREFA CLICÁVEL PARA EDIÇÃO
-        // ==============================================================
         taskDiv.addEventListener("click", () => {
           openTaskFormForEdit(task);
         });
+
+        // Adiciona a tarefa na célula
         cell.appendChild(taskDiv);
+
+        // Verifica o número de tarefas na célula
+        const taskCount = cell.querySelectorAll(".task").length;
+
+        // Se houver mais de 2 tarefas adiciona a scrollbar
+        if (taskCount > 2) {
+          cell.style.overflowY = "auto"; // Habilita o scroll vertical
+          cell.style.scrollbarWidth = "thin"; //Deixar a barra fina
+          cell.style.maxHeight = "150px"; // Ajuste a altura máxima da célula
+        }
       }
     }
   });

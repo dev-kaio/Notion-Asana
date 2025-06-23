@@ -21,7 +21,6 @@ export function w3_close() {
 window.w3_open = w3_open;
 window.w3_close = w3_close;
 
-
 const addTaskBtn = document.getElementById("add-task");
 const taskSidebar = document.getElementById("taskSidebar");
 const closeTaskSidebarBtn = document.getElementById("closeTaskSidebar");
@@ -29,7 +28,6 @@ const taskForm = document.getElementById("taskForm");
 const saveTaskButton = taskForm
   ? taskForm.querySelector('button[type="submit"]')
   : null;
-const taskTitle = document.getElementById("taskTitle");
 let editingTaskId = null;
 
 if (addTaskBtn && taskSidebar) {
@@ -38,7 +36,9 @@ if (addTaskBtn && taskSidebar) {
     if (taskForm) taskForm.reset();
     if (saveTaskButton) saveTaskButton.textContent = "Salvar";
     taskSidebar.classList.add("active");
-    taskTitle.textContent = "Adicionar Tarefa";
+
+    const btnConcluir = document.getElementById("btnConcluir");
+    btnConcluir.style.display = "none";
   });
 }
 
@@ -60,24 +60,57 @@ if (closeTaskSidebarBtn && taskSidebar) {
  */
 export function openTaskFormForEdit(taskData) {
   if (!taskForm || !taskSidebar || !saveTaskButton) {
-    console.error(
-      "Elementos do formulário ou sidebar de tarefas não encontrados."
-    );
+    console.error("Elementos do formulário ou sidebar não encontrados.");
     return;
   }
 
-  editingTaskId = taskData.id; // Define o ID da tarefa que será editada.
+//
+//
+//  ARRUMAR BOTAO CONCLUIR (ESTILO NAO ESTA ALTERANDO), TRAVAR FORM CASO TAREFA ESTEJA COM STATUS = CONCLUIDA
+//  OLHAR EM CALENDARIO.JS LINHA 198
+//
+//
 
-  taskForm.responsavel.value = taskData.responsavel || "";
-  taskForm.taskName.value = taskData.name || "";
-  taskForm.cliente.value = taskData.cliente || "";
-  taskForm.taskDate.value = taskData.date || "";
-  taskForm.taskType.value = taskData.type || "";
-  taskForm.taskDescription.value = taskData.description || "";
-  taskTitle.textContent = "Editar Tarefa";
+  editingTaskId = taskData.id;
+  taskSidebar.classList.add("active");
   saveTaskButton.textContent = "Atualizar Tarefa";
 
-  taskSidebar.classList.add("active");
+  taskForm.responsavel.value = taskData.responsavel || "";
+  taskForm.taskName.value    = taskData.name        || "";
+  taskForm.cliente.value     = taskData.cliente     || "";
+  taskForm.taskDate.value    = taskData.date        || "";
+  taskForm.taskType.value    = taskData.type        || "";
+  taskForm.taskDescription.value = taskData.description || "";
+
+  // Configura botão "Concluir"
+  const btnConcluirOld = document.getElementById("btnConcluir");
+  const btnConcluir = btnConcluirOld.cloneNode(true);
+  btnConcluir.id = "btnConcluir";
+  btnConcluir.style.display = "block";
+  btnConcluirOld.replaceWith(btnConcluir);
+
+  btnConcluir.addEventListener("click", async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`/api/editarTarefa/${taskData.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "concluída" })
+      });
+      if (!response.ok) throw new Error("Falha ao concluir tarefa");
+
+      taskData.status = "concluída";
+  
+      await fetchAndRenderTasks();
+      taskSidebar.classList.remove("active");
+      btnConcluir.style.display = "none";
+
+      alert("Tarefa marcada como concluída!");
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao concluir tarefa.");
+    }
+  });
 }
 
 if (taskForm) {
@@ -92,7 +125,14 @@ if (taskForm) {
     const description = taskForm.taskDescription.value.trim();
     const dataInsercao = new Date().toISOString();
 
-    if (!responsavel || !name || !cliente || !dateInput || !type || !description) {
+    if (
+      !responsavel ||
+      !name ||
+      !cliente ||
+      !dateInput ||
+      !type ||
+      !description
+    ) {
       alert("Preencha todos os campos");
       return;
     }
@@ -114,6 +154,7 @@ if (taskForm) {
 
       //Arrumar após criar "editar tarefa" no backend
       if (editingTaskId) {
+        delete taskBE.dataInsercao;
         method = "PUT";
         url = `/api/editarTarefa/${editingTaskId}`; // URL com o ID da tarefa para atualização
         successMessage = "Tarefa atualizada com sucesso!";
@@ -121,7 +162,6 @@ if (taskForm) {
         method = "POST";
         url = "/api/salvarTarefa"; // URL para criação de nova tarefa
         successMessage = "Tarefa adicionada com sucesso!";
-        if (taskTitle) taskTitle.textContent = "Adicionar Tarefa";
       }
 
       let headers = {
