@@ -98,6 +98,12 @@ export function openTaskFormForEdit(taskData) {
     taskForm.taskType.value = taskData.type || "";
     taskForm.taskDescription.value = taskData.description || "";
 
+    taskForm.responsavel.disabled = false;
+    taskForm.taskName.disabled = false;
+    taskForm.cliente.disabled = false;
+    taskForm.taskDate.disabled = false;
+    taskForm.taskType.disabled = false;
+    taskForm.taskDescription.disabled = false;
     saveTaskButton.disabled = false;
 
 
