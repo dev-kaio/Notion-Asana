@@ -3,7 +3,6 @@
   padding: 0;
 }
 
-
 nav {
   height: 5vh;
   display: flex;
@@ -179,7 +178,7 @@ body.dark-theme textarea::placeholder {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  cursor:pointer;
+  cursor: pointer;
 }
 
 /* Sidebar Direita - Nova Tarefa */
@@ -214,22 +213,22 @@ body.dark-theme textarea::placeholder {
 
 /* Status das tarefas */
 .task-status-em-limite {
-  background-color: #facc15;
+  background-color: rgb(250, 204, 21, 0.8);
   color: #000000;
 }
-    
+
 .task-status-concluida {
   background-color: rgba(50, 50, 50, 0.5);
   color: rgba(255, 255, 255, 0.5);
 }
 
 .task-status-atrasada {
-  background-color: #dc2626;
+  background-color: rgb(220, 38, 38, 0.8);
   color: #000000;
 }
 
 .task-status-em-desenvolvimento {
-  background-color: #16a34a;
+  background-color: rgb(22, 163, 74, 0.8);
   color: #000000;
 }
 
@@ -244,27 +243,31 @@ form {
   flex-direction: column;
 }
 
-form input, select, textarea, #btnSalvar, #btnConcluir{
+form input,
+select,
+textarea,
+#btnSalvar,
+#btnConcluir {
   border-radius: 10px;
   padding: 5px;
   padding-top: 2.5px;
   padding-bottom: 2.5px;
   margin-bottom: 4%;
-  border: 1px solid rgba(0, 0, 0, 0.5 );
+  border: 1px solid rgba(0, 0, 0, 0.5);
 }
 
-#btnSalvar{
+#btnSalvar {
   border: none;
   padding: 8px;
 }
 
-#btnConcluir{
+#btnConcluir {
   border: none;
   padding: 8px;
   font-size: larger;
 }
 
-form select{
+form select {
   margin-bottom: 4%;
 }
 
