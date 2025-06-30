@@ -1,8 +1,14 @@
 WEBSITE em desenvolvimento para gestão de equipes utilizando divisão de equipes, hierarquia de usuários e calendário de atribuições de tarefas. Com esse site é possível ter total controle do andamento da empresa e, além disso, a praticidade é extremamente aplicada aqui.
 Com fácil entendimento da plataforma, o usuário facilmente se adaptará aos recursos e funcionalidades.
 
-Tecnologias utilizadas: NODE.JS, Express, JavaScript, HTML, CSS e FireBase.
-
+Tecnologias utilizadas: 
+- NODE.JS
+- Express
+- JavaScript
+- HTML
+- CSS
+- FireBase
+  
 ![Exibição Projeto Equipes](https://github.com/user-attachments/assets/8284c40d-32e9-46bb-a0c9-45e1ba7cf726)
 Janela de Equipes.
 
