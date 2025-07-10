@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="../styles/equipes.css">
+    <link rel="stylesheet" href="../styles/sidebar.css">
 </head>
 
 <body>
@@ -15,10 +16,9 @@
         <nav>
             <div class="w3-sidebar w3-bar-block" id="mySidebar">
                 <button onclick="w3_close()" class="close-sidebar">×</button>
-                <a href="./home.html" class="w3-bar-item w3-button w3-large w3-margin-top">Home</a>
+                <a href="./equipes.html" class="w3-bar-item w3-button w3-large w3-margin-top">Home</a>
                 <a href="#" class="w3-bar-item w3-button w3-large w3-margin-top">Insights</a>
                 <a href="#" class="w3-bar-item w3-button w3-large w3-margin-top">Projetos</a>
-                <a href="./equipes.html" class="w3-bar-item w3-button w3-large w3-margin-top">Equipes</a>
             </div>
             <button class="w3-button w3-xlarge" onclick="w3_open()">☰</button>
             <button id="toggle-theme-btn"><i class="fa fa-moon-o"></i></button>
@@ -55,6 +55,9 @@
                 </form>
             </div>
         </div>
+        <button onclick="window.location.href='/pages/calendar.html?equipe=artes'">
+            <i class="fa fa-calendar"></i> Exibir Calendário
+        </button>
     </section>
 
     <script type="module" src="../src/main.js"></script>

@@ -1,4 +1,5 @@
 import { db } from '../config/firebaseConfig.js';
+import { initializeCalendar, fetchAndRenderTasks } from "../components/calendario.js";
 import {
     ref,
     push,
@@ -7,7 +8,6 @@ import {
     get,
     update
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
 const openModalBtn = document.getElementById('openModalBtn');
 const closeModalBtn = document.getElementById('closeModalBtn');
 const teamModal = document.getElementById('teamModal');
@@ -20,6 +20,36 @@ const teamDescription = document.getElementById('teamDescription');
 const avatarCountInput = document.getElementById('avatarCount');
 
 let editTeamId = null;
+
+document.addEventListener("DOMContentLoaded", () => {
+    const calendarBtn = document.getElementById("toggleCalendarBtn");
+    const calendarContainer = document.getElementById("calendarContainer");
+
+    calendarBtn?.addEventListener("click", () => {
+        if (calendarContainer.style.display === "none") {
+            calendarContainer.style.display = "block";
+            initializeCalendar();
+            fetchAndRenderTasks("artes");
+        } else {
+            calendarContainer.style.display = "none";
+        }
+    });
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    const calendarBtn = document.getElementById("toggleCalendarBtn");
+    const calendarContainer = document.getElementById("calendarContainer");
+
+    calendarBtn?.addEventListener("click", () => {
+        if (calendarContainer.style.display === "none") {
+            calendarContainer.style.display = "block";
+            initializeCalendar();
+            fetchAndRenderTasks("artes");
+        } else {
+            calendarContainer.style.display = "none";
+        }
+    });
+});
 
 window.onload = async () => {
     const equipesRef = ref(db, "Equipes/Artes");
@@ -116,7 +146,7 @@ function renderTeamCard(team, key) {
 }
 
 function deleteTeam(teamId, cardElement) {
-    const teamRef = ref(db, "Equipes/Atendimento/" + teamId);
+    const teamRef = ref(db, "Equipes/Artes/" + teamId);
     remove(teamRef)
         .then(() => {
             teamsList.removeChild(cardElement);

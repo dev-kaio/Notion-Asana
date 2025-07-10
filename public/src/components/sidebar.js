@@ -64,80 +64,53 @@ export function openTaskFormForEdit(taskData) {
     return;
   }
 
+  //
+  //
+  //  ARRUMAR BOTAO CONCLUIR (ESTILO NAO ESTA ALTERANDO), TRAVAR FORM CASO TAREFA ESTEJA COM STATUS = CONCLUIDA
+  //  OLHAR EM CALENDARIO.JS LINHA 198
+  //
+  //
+
   editingTaskId = taskData.id;
   taskSidebar.classList.add("active");
   saveTaskButton.textContent = "Atualizar Tarefa";
 
-  if (taskData.status === "concluída") {
-    const btnConcluirOld = document.getElementById("btnConcluir");
-    const btnConcluir = btnConcluirOld.cloneNode(true);
-    btnConcluir.id = "btnConcluir";
-    btnConcluir.style.display = "none";
+  taskForm.responsavel.value = taskData.responsavel || "";
+  taskForm.taskName.value = taskData.name || "";
+  taskForm.cliente.value = taskData.cliente || "";
+  taskForm.taskDate.value = taskData.date || "";
+  taskForm.taskType.value = taskData.type || "";
+  taskForm.taskDescription.value = taskData.description || "";
 
-    btnConcluirOld.replaceWith(btnConcluir);
-    taskForm.responsavel.disabled = true;
-    taskForm.taskName.disabled = true;
-    taskForm.cliente.disabled = true;
-    taskForm.taskDate.disabled = true;
-    taskForm.taskType.disabled = true;
-    taskForm.taskDescription.disabled = true;
-    saveTaskButton.disabled = true;
+  // Configura botão "Concluir"
+  const btnConcluirOld = document.getElementById("btnConcluir");
+  const btnConcluir = btnConcluirOld.cloneNode(true);
+  btnConcluir.id = "btnConcluir";
+  btnConcluir.style.display = "block";
+  btnConcluirOld.replaceWith(btnConcluir);
 
-    taskForm.responsavel.value = taskData.responsavel || "";
-    taskForm.taskName.value = taskData.name || "";
-    taskForm.cliente.value = taskData.cliente || "";
-    taskForm.taskDate.value = taskData.date || "";
-    taskForm.taskType.value = taskData.type || "";
-    taskForm.taskDescription.value = taskData.description || "";
-  }
-  else {
-    taskForm.responsavel.value = taskData.responsavel || "";
-    taskForm.taskName.value = taskData.name || "";
-    taskForm.cliente.value = taskData.cliente || "";
-    taskForm.taskDate.value = taskData.date || "";
-    taskForm.taskType.value = taskData.type || "";
-    taskForm.taskDescription.value = taskData.description || "";
+  btnConcluir.addEventListener("click", async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`/api/editarTarefa/${taskData.id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "concluída" })
+      });
+      if (!response.ok) throw new Error("Falha ao concluir tarefa");
 
-    taskForm.responsavel.disabled = false;
-    taskForm.taskName.disabled = false;
-    taskForm.cliente.disabled = false;
-    taskForm.taskDate.disabled = false;
-    taskForm.taskType.disabled = false;
-    taskForm.taskDescription.disabled = false;
-    saveTaskButton.disabled = false;
+      taskData.status = "concluída";
 
+      await fetchAndRenderTasks();
+      taskSidebar.classList.remove("active");
+      btnConcluir.style.display = "none";
 
-    // Configura botão "Concluir"
-    const btnConcluirOld = document.getElementById("btnConcluir");
-    const btnConcluir = btnConcluirOld.cloneNode(true);
-    btnConcluir.id = "btnConcluir";
-    btnConcluir.style.display = "block";
-    btnConcluirOld.replaceWith(btnConcluir);
-
-
-    btnConcluir.addEventListener("click", async (e) => {
-      e.preventDefault();
-      try {
-        const response = await fetch(`/api/editarTarefa/${taskData.id}`, {
-          method: "PUT",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ status: "concluída" })
-        });
-        if (!response.ok) throw new Error("Falha ao concluir tarefa");
-
-        taskData.status = "concluída";
-
-        await fetchAndRenderTasks();
-        taskSidebar.classList.remove("active");
-        btnConcluir.style.display = "none";
-
-        alert("Tarefa marcada como concluída!");
-      } catch (err) {
-        console.error(err);
-        alert("Erro ao concluir tarefa.");
-      }
-    });
-  }
+      alert("Tarefa marcada como concluída!");
+    } catch (err) {
+      console.error(err);
+      alert("Erro ao concluir tarefa.");
+    }
+  });
 }
 
 if (taskForm) {
@@ -173,7 +146,12 @@ if (taskForm) {
       description,
       status: "em desenvolvimento",
     };
+    //adiciona o valor do ID da equipe pela URL
+    const params = new URLSearchParams(window.location.search);
+    const equipeId = params.get("equipe");
+    taskBE.equipeId = equipeId;
 
+    console.log("Dados enviados:", taskBE)
     try {
       let method;
       let url;

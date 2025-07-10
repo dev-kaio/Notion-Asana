@@ -30,7 +30,7 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 app.get("/equipes", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "pages/equipes.html"));
+  res.sendFile(path.join(__dirname, "public", "pages", "equipes.html"));
 });
 
 app.get("/atendimento", (req, res) => {
@@ -126,8 +126,10 @@ app.post("/api/login", async (req, res) => {
 app.post("/api/salvarTarefa", async (req, res) => {
   try {
     const newTask = req.body;
+    const equipeId = newTask.equipeId; // receber o id/nome da equipe aqui
 
     if (
+      !equipeId ||
       !newTask.responsavel ||
       !newTask.name ||
       !newTask.cliente ||
@@ -136,62 +138,68 @@ app.post("/api/salvarTarefa", async (req, res) => {
       !newTask.type ||
       !newTask.description
     ) {
-      return res
-        .status(400)
-        .json({ message: "Todos os campos devem ser preenchidos." });
+      return res.status(400).json({ message: "Todos os campos devem ser preenchidos." });
     }
 
-    const tempRef = db.ref("Tarefas").push();
+    const tempRef = db.ref(`Tarefas/${equipeId}`).push();
     const keyBD = tempRef.key;
 
     const caminhoFormatado = newTask.name
       .replace(/[^a-zA-Z0-9\s-]/g, "")
       .replace(/\s+/g, " ")
       .trim();
+
     const dataLimite = newTask.date;
     const caminhoFinal = `${caminhoFormatado} (${dataLimite}) ${keyBD}`;
 
-    await db.ref(`Tarefas/${caminhoFinal}`).set(newTask);
+    await db.ref(`Tarefas/${equipeId}/${caminhoFinal}`).set(newTask);
 
-    res
-      .status(201)
-      .json({ id: caminhoFinal, message: "Tarefa salva com sucesso." });
+    res.status(201).json({ id: caminhoFinal, message: "Tarefa salva com sucesso." });
   } catch (error) {
     console.error("Erro ao salvar tarefa no Banco de Dados: ", error);
-    res.status(500).json({
-      message: "Erro interno do servidor ao salvar tarefa.",
-      error: error.message,
-    });
+    res.status(500).json({ message: "Erro interno do servidor ao salvar tarefa.", error: error.message });
   }
 });
 
-//Puxar tarefas do BD
+// Puxar tarefas do Firebase por equipeId
 app.get("/api/puxarTarefas", async (req, res) => {
   try {
-    const tarefasRef = db.ref("Tarefas");
+    const equipeId = req.query.equipeId;
+
+    if (!equipeId) {
+      return res.status(400).json({ message: "equipeId é obrigatório." });
+    }
+
+    const tarefasRef = db.ref(`Tarefas/${equipeId}`);
     const snapshot = await tarefasRef.once("value");
     const tarefas = snapshot.val();
+
     const tarefasArray = [];
     if (tarefas) {
       for (const tarefaId in tarefas) {
         tarefasArray.push({ id: tarefaId, ...tarefas[tarefaId] });
       }
     }
+
     res.status(200).json(tarefasArray);
   } catch (error) {
-    console.error("Erro ao buscar tarefa: ", error);
+    console.error("Erro ao buscar tarefas: ", error);
     res
       .status(500)
       .json({ message: "Erro ao buscar tarefas", error: error.message });
   }
 });
 
+
+
 //Deletar tarefa
 app.delete("/api/deletarTarefa/:id", async (req, res) => {
   try {
-    const tarefaID = req.params.id;
-
-    await db.ref(`Tarefas/${tarefaID}`).remove();
+    const equipeId = req.query.equipeId;
+    if (!equipeId) {
+      return res.status(400).json({ message: "EquipeId é obrigatório." });
+    }
+    await db.ref(`Tarefas/${equipeId}`).remove();
 
     res.status(200).json({ message: "Tarefa deletada com sucesso." });
   } catch (error) {
@@ -205,7 +213,10 @@ app.delete("/api/deletarTarefa/:id", async (req, res) => {
 //Atualizar tarefa
 app.put("/api/editarTarefa/:id", async (req, res) => {
   try {
-    const tarefaID = req.params.id;
+    const equipeId = req.query.equipeId;
+    if (!equipeId) {
+      return res.status(400).json({ message: "EquipeId é obrigatório." });
+    }
     const updatedTaskData = req.body;
 
     //VERIFYIDTOKEN FUTURAMENTE
@@ -213,7 +224,7 @@ app.put("/api/editarTarefa/:id", async (req, res) => {
     // Para isso, você precisaria buscar a tarefa do banco de dados primeiro
     // e comparar o 'creatorUid' (se você o salvou) com 'req.user.uid'.
 
-    await db.ref(`Tarefas/${tarefaID}`).update(updatedTaskData);
+    await db.ref(`Tarefas/${equipeId}`).update(updatedTaskData);
     res.status(200).json({ message: "Tarefa atualizada com sucesso." });
   } catch (error) {
     console.error("Erro ao atualizar tarefa: ", error);

@@ -207,32 +207,6 @@ section {
     opacity: 0.7;
 }
 
-
-.close-sidebar {
-    font-size: 24px;
-    border: none;
-    background: none;
-    cursor: pointer;
-    margin-left: 10px;
-}
-
-#mySidebar a {
-    color: black !important;
-    font-weight: bold;
-}
-
-#mySidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 15vw;
-    display: none;
-    z-index: 1001;
-    overflow-y: auto;
-    background-color: #fff;
-}
-
 .dark-theme {
     background-color: #1e1e1e;
     color: #f0f0f0;

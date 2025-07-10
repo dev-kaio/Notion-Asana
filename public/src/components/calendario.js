@@ -100,12 +100,18 @@ function renderCalendarGrid() {
  * Exportada para ser chamada por main.js (no carregamento inicial) e
  * por sidebar.js (após adicionar/atualizar uma nova tarefa).
  */
-export async function fetchAndRenderTasks() {
+export async function fetchAndRenderTasks(equipeId) {
   try {
     let headers = {
       "Content-Type": "application/json",
     };
+    const params = new URLSearchParams(window.location.search);
+    const equipeId = params.get("equipe");
 
+    if (!equipeId) {
+      console.error("EquipeId não encontrado na URL");
+      return;
+    }
     // ANALISAR AO CRIAR VERIFYIDTOKEN FUTURAMENTE
     // Se a rota `/api/puxarTarefas` for protegida no backend (com verifyIdToken),
     // este bloco será ativado para enviar o token do usuário logado.
@@ -116,7 +122,7 @@ export async function fetchAndRenderTasks() {
     //     console.warn("Nenhum usuário logado. Tentando buscar tarefas sem token.");
     // }
 
-    const response = await fetch("/api/puxarTarefas", {
+    const response = await fetch(`/api/puxarTarefas?equipeId=${encodeURIComponent(equipeId)}`, {
       method: "GET",
       headers: headers,
     });
@@ -135,11 +141,9 @@ export async function fetchAndRenderTasks() {
         }`
       );
     }
-
     const data = await response.json();
     tasks = data;
     console.log("Tarefas carregadas do backend:", tasks);
-
     renderTasksOnCalendar();
   } catch (error) {
     console.error("Erro ao buscar tarefas do backend:", error);
@@ -166,7 +170,7 @@ function renderTasksOnCalendar() {
       console.warn("Tarefa com data inválida ou ausente, ignorando:", task);
       return;
     }
-    const taskDate = new Date(task.dataInsercao);
+    const taskDate = new Date(task.date);
 
     // Verifica se a tarefa pertence ao mês e ano atualmente exibidos no calendário.
     if (taskDate.getFullYear() === year && taskDate.getMonth() === month) {
@@ -185,6 +189,7 @@ function renderTasksOnCalendar() {
         const taskDiv = document.createElement("div");
         taskDiv.classList.add("task");
 
+        // Mudar cor de acordo com a data de entrega
         const hoje = new Date();
         hoje.setHours(0, 0, 0, 0);
 
@@ -192,19 +197,23 @@ function renderTasksOnCalendar() {
         dataLimite.setHours(0, 0, 0, 0);
 
         if (task.status == "concluída") {
+
+          //ClassName nao esta alterando, apesar do status de conclusao os antigos classlists (desenvolvimento, atrasado ou dia limite) nao estao sendo removidos
           taskDiv.className = "task task-status-concluida";
+          console.log(
+            "Classe 'task-status-concluida' aplicada à tarefa:",
+            taskDiv
+          );
         }
-        else {
-          if (dataLimite > hoje) {
-            task.status = "dentro do prazo";
-            taskDiv.classList.add("task-status-em-desenvolvimento");
-          } else if (dataLimite.getTime() === hoje.getTime()) {
-            task.status = "dia limite";
-            taskDiv.classList.add("task-status-em-limite");
-          } else {
-            task.status = "atrasada";
-            taskDiv.classList.add("task-status-atrasada");
-          }
+        if (dataLimite > hoje) {
+          task.status = "dentro do prazo";
+          taskDiv.classList.add("task-status-em-desenvolvimento");
+        } else if (dataLimite.getTime() === hoje.getTime()) {
+          task.status = "dia limite";
+          taskDiv.classList.add("task-status-em-limite");
+        } else {
+          task.status = "atrasada";
+          taskDiv.classList.add("task-status-atrasada");
         }
 
         const dia = String(dataLimite.getDate()).padStart(2, "0");
@@ -235,4 +244,16 @@ function renderTasksOnCalendar() {
       }
     }
   });
+}
+if (document.getElementById("calendar-grid") && document.getElementById("current-month")) {
+  initializeCalendar();
+
+  const params = new URLSearchParams(window.location.search);
+  const equipeId = params.get("equipe");
+
+  if (!equipeId) {
+    console.error("Nenhum 'equipe' fornecido na URL.");
+  } else {
+    fetchAndRenderTasks(equipeId);
+  }
 }

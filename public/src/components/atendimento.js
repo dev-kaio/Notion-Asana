@@ -21,6 +21,21 @@ const avatarCountInput = document.getElementById('avatarCount');
 
 let editTeamId = null;
 
+document.addEventListener("DOMContentLoaded", () => {
+    const calendarBtn = document.getElementById("toggleCalendarBtn");
+    const calendarContainer = document.getElementById("calendarContainer");
+
+    calendarBtn?.addEventListener("click", () => {
+        if (calendarContainer.style.display === "none") {
+            calendarContainer.style.display = "block";
+            initializeCalendar();
+            fetchAndRenderTasks("atendimento");
+        } else {
+            calendarContainer.style.display = "none";
+        }
+    });
+});
+
 window.onload = async () => {
     const equipesRef = ref(db, "Equipes/Atendimento");
     try {

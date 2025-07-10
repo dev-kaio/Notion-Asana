@@ -21,6 +21,21 @@ const avatarCountInput = document.getElementById('avatarCount');
 
 let editTeamId = null;
 
+document.addEventListener("DOMContentLoaded", () => {
+    const calendarBtn = document.getElementById("toggleCalendarBtn");
+    const calendarContainer = document.getElementById("calendarContainer");
+
+    calendarBtn?.addEventListener("click", () => {
+        if (calendarContainer.style.display === "none") {
+            calendarContainer.style.display = "block";
+            initializeCalendar();
+            fetchAndRenderTasks("fotoFilmagem");
+        } else {
+            calendarContainer.style.display = "none";
+        }
+    });
+});
+
 window.onload = async () => {
     const equipesRef = ref(db, "Equipes/Multimidia/FotoFilmagem");
     try {
@@ -116,7 +131,7 @@ function renderTeamCard(team, key) {
 }
 
 function deleteTeam(teamId, cardElement) {
-    const teamRef = ref(db, "Equipes/Atendimento/" + teamId);
+    const teamRef = ref(db, "Equipes/Multimidia/FotoFilmagem/" + teamId);
     remove(teamRef)
         .then(() => {
             teamsList.removeChild(cardElement);

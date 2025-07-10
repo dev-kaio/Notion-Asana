@@ -8,20 +8,23 @@
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="../styles/equipes.css">
+    <link rel="stylesheet" href="../styles/sidebar.css" />
 </head>
 
 <body>
     <header>
         <nav>
             <div class="w3-sidebar w3-bar-block" id="mySidebar">
-                <button onclick="w3_close()" class="close-sidebar">×</button>
-                <a href="./home.html" class="w3-bar-item w3-button w3-large w3-margin-top">Home</a>
+                <button onclick="w3_close()" class="close-sidebar"
+                    style="margin: 20px; margin-top: 0px; margin-bottom: 10px">
+                    ×
+                </button>
+                <a href="./equipes.html" class="w3-bar-item w3-button w3-large w3-margin-top">Home</a>
                 <a href="#" class="w3-bar-item w3-button w3-large w3-margin-top">Insights</a>
                 <a href="#" class="w3-bar-item w3-button w3-large w3-margin-top">Projetos</a>
-                <a href="#" class="w3-bar-item w3-button w3-large w3-margin-top">Equipes</a>
             </div>
             <button class="w3-button w3-xlarge" onclick="w3_open()">☰</button>
-            <button id="toggle-theme-btn"><i class="fa fa-moon-o"></i></button>
+            <button id="toggle-theme-btn" style="margin-left: 10px;"><i class="fa fa-moon-o"></i></button>
         </nav>
     </header>
     <section>
@@ -44,9 +47,7 @@
             </div>
 
             <button onclick="location.href='./artes.html'">Artes</button>
-            <!-- Na página ./artes.html, ao selecionar a equipe desejada, redirecionar para o destino apropriado -->
-            <!-- Exemplo: location.href = `./detalhes-arte.html?id=${equipeId}` -->
         </div>
-    <script type="module" src="../src/main.js"></script>
-    <script type="module" src="../src/components/equipes.js"></script>
+        <script type="module" src="../src/main.js"></script>
+        <!-- <script type="module" src="../src/components/equipes.js"></script> -->
 </body>

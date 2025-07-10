@@ -1,0 +1,39 @@
+#mySidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 15vw;
+    height: 100vh;
+    background-color: #fff;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+    overflow-y: auto;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.15);
+}
+
+#mySidebar.active {
+    transform: translateX(0);
+}
+
+#mySidebar a {
+    color: black !important;
+    font-weight: bold;
+}
+
+.close-sidebar {
+    font-size: 24px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+body.dark-theme .w3-sidebar {
+    background-color: #333 !important;
+    color: #eee;
+}
+
+body.dark-theme .w3-bar-block .w3-button {
+    color: #eee !important;
+}
