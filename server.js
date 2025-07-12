@@ -126,7 +126,7 @@ app.post("/api/login", async (req, res) => {
 app.post("/api/salvarTarefa", async (req, res) => {
   try {
     const newTask = req.body;
-    const equipeId = newTask.equipeId; // receber o id/nome da equipe aqui
+    const equipeId = newTask.equipeId; // recebe o id/nome da equipe aqui
 
     if (
       !equipeId ||
@@ -214,22 +214,18 @@ app.delete("/api/deletarTarefa/:id", async (req, res) => {
 app.put("/api/editarTarefa/:id", async (req, res) => {
   try {
     const equipeId = req.query.equipeId;
-    if (!equipeId) {
-      return res.status(400).json({ message: "EquipeId é obrigatório." });
+    const tarefaId = req.params.id;
+
+    if (!equipeId || !tarefaId) {
+      return res.status(400).json({ message: "EquipeId e ID da tarefa são obrigatórios." });
     }
+
     const updatedTaskData = req.body;
 
-    //VERIFYIDTOKEN FUTURAMENTE
-    // Opcional: Verifique se o usuário autenticado tem permissão para atualizar esta tarefa.
-    // Para isso, você precisaria buscar a tarefa do banco de dados primeiro
-    // e comparar o 'creatorUid' (se você o salvou) com 'req.user.uid'.
-
-    await db.ref(`Tarefas/${equipeId}`).update(updatedTaskData);
+    await db.ref(`Tarefas/${equipeId}/${tarefaId}`).update(updatedTaskData);
     res.status(200).json({ message: "Tarefa atualizada com sucesso." });
   } catch (error) {
     console.error("Erro ao atualizar tarefa: ", error);
-    res
-      .status(500)
-      .json({ message: "Erro ao atualizar tarefa", error: error.message });
+    res.status(500).json({ message: "Erro ao atualizar tarefa", error: error.message });
   }
 });

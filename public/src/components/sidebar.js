@@ -161,7 +161,7 @@ if (taskForm) {
       if (editingTaskId) {
         delete taskBE.dataInsercao;
         method = "PUT";
-        url = `/api/editarTarefa/${editingTaskId}`; // URL com o ID da tarefa para atualização
+        url = `/api/editarTarefa/${editingTaskId}?equipeId=${equipeId}`; // URL com o ID da tarefa para atualização
         successMessage = "Tarefa atualizada com sucesso!";
       } else {
         method = "POST";
