@@ -173,7 +173,7 @@ body.dark-theme textarea::placeholder {
 
 /* Status das tarefas */
 .task-status-em-limite {
-  background-color: #facc15;
+  background-color: rgb(250, 204, 21, 0.8);
   color: #000000;
 }
 
@@ -183,12 +183,12 @@ body.dark-theme textarea::placeholder {
 }
 
 .task-status-atrasada {
-  background-color: #dc2626;
+  background-color: rgb(220, 38, 38, 0.8);
   color: #000000;
 }
 
 .task-status-em-desenvolvimento {
-  background-color: #16a34a;
+  background-color: rgb(22, 163, 74, 0.8);
   color: #000000;
 }
 
@@ -216,14 +216,8 @@ textarea,
   border: 1px solid rgba(0, 0, 0, 0.5);
 }
 
-#btnSalvar {
-  border: none;
-  padding: 8px;
-}
-
 #btnConcluir {
   border: none;
-  padding: 8px;
   font-size: larger;
 }
 

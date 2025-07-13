@@ -189,7 +189,6 @@ function renderTasksOnCalendar() {
         const taskDiv = document.createElement("div");
         taskDiv.classList.add("task");
 
-        // Mudar cor de acordo com a data de entrega
         const hoje = new Date();
         hoje.setHours(0, 0, 0, 0);
 
@@ -197,23 +196,19 @@ function renderTasksOnCalendar() {
         dataLimite.setHours(0, 0, 0, 0);
 
         if (task.status == "concluída") {
-
-          //ClassName nao esta alterando, apesar do status de conclusao os antigos classlists (desenvolvimento, atrasado ou dia limite) nao estao sendo removidos
           taskDiv.className = "task task-status-concluida";
-          console.log(
-            "Classe 'task-status-concluida' aplicada à tarefa:",
-            taskDiv
-          );
         }
-        if (dataLimite > hoje) {
-          task.status = "dentro do prazo";
-          taskDiv.classList.add("task-status-em-desenvolvimento");
-        } else if (dataLimite.getTime() === hoje.getTime()) {
-          task.status = "dia limite";
-          taskDiv.classList.add("task-status-em-limite");
-        } else {
-          task.status = "atrasada";
-          taskDiv.classList.add("task-status-atrasada");
+        else {
+          if (dataLimite > hoje) {
+            task.status = "dentro do prazo";
+            taskDiv.classList.add("task-status-em-desenvolvimento");
+          } else if (dataLimite.getTime() === hoje.getTime()) {
+            task.status = "dia limite";
+            taskDiv.classList.add("task-status-em-limite");
+          } else {
+            task.status = "atrasada";
+            taskDiv.classList.add("task-status-atrasada");
+          }
         }
 
         const dia = String(dataLimite.getDate()).padStart(2, "0");
